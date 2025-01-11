@@ -358,7 +358,7 @@ static void chassis_kb_operation_func(rc_info_t rc)//底盘运动控制函数
 		km.vx =  rc.kb.bit.D  * CHASSIS_KB_MAX_SPEED_X * CHASSIS_KB_MOVE_RATIO_X;
 	}
  
-	km.vw = rc.mouse.x / RC_RESOLUTION * CHASSIS_KB_MAX_SPEED_R * CHASSIS_KB_MOVE_RATIO_R*0.5;//乘以0.5是因为操作时感觉转弯过于灵敏
+	km.vw = rc.mouse.x / RC_RESOLUTION * CHASSIS_KB_MAX_SPEED_R * CHASSIS_KB_MOVE_RATIO_R*0.5f;//乘以0.5是因为操作时感觉转弯过于灵敏
 }
 // void keyboard_ore_adjust_hook()
 // {

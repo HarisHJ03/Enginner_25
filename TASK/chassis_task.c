@@ -213,35 +213,35 @@ void chassis_task(void *parm)
 //    chassis_stack_surplus = uxTaskGetStackHighWaterMark(NULL);
   }
 }
-uint32_t Turn_Record_times;
-static uint8_t chassis_Auto_Turn()
-{
-	uint8_t Turn_ready_flag=0;
-	int16_t Turn_speed=300;
-	if(Now_chassi_direction!=Last_chassi_direction)
-	{
-		Turn_Record_times=HAL_GetTick();
-		Last_chassi_direction=Now_chassi_direction;
-	}
-	if(HAL_GetTick()-Turn_Record_times <= 700 && HAL_GetTick()>10000)
-	{
-		switch(Now_chassi_direction)
-		{
-			case AHEAD_BACK:
-			{
-				chassis.vw= -Turn_speed;
-			}break;
-			case AHEAD_FRONT:
-			{
-				chassis.vw= +Turn_speed;
-			}break;
-		}
-		Turn_ready_flag=0;
-	}
-	else 
-		Turn_ready_flag=1;
-	return Turn_ready_flag;
-}
+// uint32_t Turn_Record_times;
+// static uint8_t chassis_Auto_Turn()
+// {
+// 	uint8_t Turn_ready_flag=0;
+// 	int16_t Turn_speed=300;
+// 	if(Now_chassi_direction!=Last_chassi_direction)
+// 	{
+// 		Turn_Record_times=HAL_GetTick();
+// 		Last_chassi_direction=Now_chassi_direction;
+// 	}
+// 	if(HAL_GetTick()-Turn_Record_times <= 700 && HAL_GetTick()>10000)
+// 	{
+// 		switch(Now_chassi_direction)
+// 		{
+// 			case AHEAD_BACK:
+// 			{
+// 				chassis.vw= -Turn_speed;
+// 			}break;
+// 			case AHEAD_FRONT:
+// 			{
+// 				chassis.vw= +Turn_speed;
+// 			}break;
+// 		}
+// 		Turn_ready_flag=0;
+// 	}
+// 	else 
+// 		Turn_ready_flag=1;
+// 	return Turn_ready_flag;
+// }
 
 extern uint8_t gimbal_ctrl;
 static void chassis_ahead_to_back(void)

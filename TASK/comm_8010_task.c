@@ -69,10 +69,10 @@ void coom_8010_task(void *parm)
 				}
 				else
 				{
-					test_8010_angle = (motor8010_init_angle+test_test)*6.2831;
-					if(test_test>=3.14)
+					test_8010_angle = (motor8010_init_angle+test_test)*6.2831f;
+					if(test_test>=3.14f)
 					{
-						test_test=3.14;
+						test_test=3.14f;
 					}
 					
 					// go8010_task_2();

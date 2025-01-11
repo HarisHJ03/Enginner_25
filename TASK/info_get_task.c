@@ -261,7 +261,7 @@ static void Get_Motor_info(void)
 						Motor[ID].Brushless.torque_fbd = motor_recevie.T;
 						Motor[ID].Brushless.spd_fdb = motor_recevie.W;
 						//					Motor[ID].Brushless.l_angle_fdb=Motor[ID].Brushless.angle_fdb;
-						Motor[ID].Brushless.angle_fdb = (((motor_recevie.Pos) * 180.00f) / PI) / 6.33;
+						Motor[ID].Brushless.angle_fdb = (((motor_recevie.Pos) * 180.00f) / PI) / 6.33f;
 
 						// test_8010_pid=Motor[13].Brushless.angle_fdb;
 						// test_8010_pid2=Motor[13].Brushless.angle_ref;
