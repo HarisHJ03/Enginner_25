@@ -84,6 +84,18 @@ typedef struct {
         ControlData_t  motor_send_data;  
 }GO_Motorfield;
 extern GO_Motorfield motor_recevie;
+
+typedef struct
+{
+    // int id;
+    float T;
+    fp32 Pos;
+    float W;
+    float K_P;
+    float K_W;
+} M8010_SendData;
+extern M8010_SendData m8010_senddata[4];//8010发送结构体初始化
+
 //motor init function 
 void GO_M8010_init(GO_Motorfield *GO_motor_info,uint8_t id);
 
@@ -104,6 +116,7 @@ void go8010_init(void);
 
 // motor array
 extern GO_Motorfield GO_motor_info[4];
+
 void go8010_receive(void);
 
 

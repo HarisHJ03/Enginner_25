@@ -11,7 +11,6 @@
 
 #include "PID.h"
 uint8_t Temp_buffer[16]; // 这个是缓存DMA的数据
-// GO_Motorfield motor_recevie;//这个是将DMA的数据解算
 fp32 tt, vv, pp;//pp多圈计算的编码值
 int i = 0;
 pid_t control_8010_pid;
@@ -21,6 +20,7 @@ uint8_t Serial_RxFlag;	//????????????
 
 int16_t go_8010_current;
 GO_Motorfield motor_recevie;
+
 float test_send;
 
 extern uint8_t motor_8010_TXbuf[TX_MAX_BUFLEN];

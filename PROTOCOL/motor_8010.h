@@ -1,111 +1,111 @@
 #ifndef __GO_M8010_6_H
 #define __GO_M8010_6_H
 
-//#include "main.h"
+// #include "main.h"
 #include "crc.h"
 #include "usart.h"
 #include "string.h"
 #include <math.h>
 
 /**
- * @brief µç»úÄ£Ê½¿ØÖÆĞÅÏ¢
- * 
+ * @brief ç”µæœºæ¨¡å¼æ§åˆ¶ä¿¡æ¯
+ *
  */
- #define P_MIN 	-95.5f    // Radians
-#define P_MAX 	 95.5f        
-#define V_MIN 	-45.0f    // Rad/s
-#define V_MAX 	 45.0f
-#define KP_MIN	 0.0f     // N-m/rad
-#define KP_MAX 	 500.0f
-#define KD_MIN	 0.0f     // N-m/rad/s
-#define KD_MAX	 5.0f
-#define T_MIN 	-5.0f
-#define T_MAX	 5.0f
+#define P_MIN -95.5f // Radians
+#define P_MAX 95.5f
+#define V_MIN -45.0f // Rad/s
+#define V_MAX 45.0f
+#define KP_MIN 0.0f // N-m/rad
+#define KP_MAX 500.0f
+#define KD_MIN 0.0f // N-m/rad/s
+#define KD_MAX 5.0f
+#define T_MIN -5.0f
+#define T_MAX 5.0f
 
-static const float go8010_pid[5] = {0.5,0.01,5,0.6,0};//ÔÚ¶¨ÒåÊı×éÊ±¼ÓÉÏstatic±íÊ¾Æä×÷ÓÃÓòÖ»ÓĞmotor8010.cÎÄ¼ş£¬Èô²»¼ÓÉÏ¾Í±íÊ¾ËùÓĞ´ømotor8010.hµÄÎÄ¼ş¶¼»á¶ÔÆä²úÉú¶¨Òå£¬¾Í»á³öÏÖÖØ¶¨ÒåµÄ±¨´í
+static const float go8010_pid[5] = {0.5, 0.01, 5, 0.6, 0}; // åœ¨å®šä¹‰æ•°ç»„æ—¶åŠ ä¸Šstaticè¡¨ç¤ºå…¶ä½œç”¨åŸŸåªæœ‰motor8010.cæ–‡ä»¶ï¼Œè‹¥ä¸åŠ ä¸Šå°±è¡¨ç¤ºæ‰€æœ‰å¸¦motor8010.hçš„æ–‡ä»¶éƒ½ä¼šå¯¹å…¶äº§ç”Ÿå®šä¹‰ï¼Œå°±ä¼šå‡ºç°é‡å®šä¹‰çš„æŠ¥é”™
 
-typedef struct     // __attribute__((packed)) <- c++
+typedef struct // __attribute__((packed)) <- c++
 {
-    uint8_t id     :4;      // µç»úID: 0,1...,14 15±íÊ¾ÏòËùÓĞµç»ú¹ã²¥Êı¾İ(´ËÊ±ÎŞ·µ»Ø)
-    uint8_t status :3;      // ¹¤×÷Ä£Ê½: 0.Ëø¶¨ 1.FOC±Õ»· 2.±àÂëÆ÷Ğ£×¼ 3.±£Áô
-    uint8_t none   :1;      // ±£ÁôÎ»
-} RIS_Mode_t /*__attribute__((packed))*/;   // ¿ØÖÆÄ£Ê½ 1Byte
-
-
+    uint8_t id : 4;                       // ç”µæœºID: 0,1...,14 15è¡¨ç¤ºå‘æ‰€æœ‰ç”µæœºå¹¿æ’­æ•°æ®(æ­¤æ—¶æ— è¿”å›)
+    uint8_t status : 3;                   // å·¥ä½œæ¨¡å¼: 0.é”å®š 1.FOCé—­ç¯ 2.ç¼–ç å™¨æ ¡å‡† 3.ä¿ç•™
+    uint8_t none : 1;                     // ä¿ç•™ä½
+} RIS_Mode_t /*__attribute__((packed))*/; // æ§åˆ¶æ¨¡å¼ 1Byte
 
 /**
- * @brief µç»ú×´Ì¬¿ØÖÆĞÅÏ¢
- * 
+ * @brief ç”µæœºçŠ¶æ€æ§åˆ¶ä¿¡æ¯
+ *
  */
 typedef struct
 {
-    int16_t tor_des;        // ÆÚÍû¹Ø½ÚÊä³öÅ¤¾Ø unit: N.m     (q8)
-    int16_t spd_des;        // ÆÚÍû¹Ø½ÚÊä³öËÙ¶È unit: rad/s   (q7)
-    int32_t pos_des;        // ÆÚÍû¹Ø½ÚÊä³öÎ»ÖÃ unit: rad     (q15)
-    uint16_t  k_pos;        // ÆÚÍû¹Ø½Ú¸Õ¶ÈÏµÊı unit: 0.0-1.0 (q15)
-    uint16_t  k_spd;        // ÆÚÍû¹Ø½Ú×èÄáÏµÊı unit: 0.0-1.0 (q15)
-    
-} RIS_Comd_t;   // ¿ØÖÆ²ÎÊı 12Byte
+    int16_t tor_des; // æœŸæœ›å…³èŠ‚è¾“å‡ºæ‰­çŸ© unit: N.m     (q8)
+    int16_t spd_des; // æœŸæœ›å…³èŠ‚è¾“å‡ºé€Ÿåº¦ unit: rad/s   (q7)
+    int32_t pos_des; // æœŸæœ›å…³èŠ‚è¾“å‡ºä½ç½® unit: rad     (q15)
+    uint16_t k_pos;  // æœŸæœ›å…³èŠ‚åˆšåº¦ç³»æ•° unit: 0.0-1.0 (q15)
+    uint16_t k_spd;  // æœŸæœ›å…³èŠ‚é˜»å°¼ç³»æ•° unit: 0.0-1.0 (q15)
 
-
-
+} RIS_Comd_t; // æ§åˆ¶å‚æ•° 12Byte
 
 /**
- * @brief ¿ØÖÆÊı¾İ°ü¸ñÊ½
- * 
+ * @brief æ§åˆ¶æ•°æ®åŒ…æ ¼å¼
+ *
  */
 typedef struct
 {
-    uint8_t head[2];    // °üÍ·         2Byte
-    RIS_Mode_t mode;    // µç»ú¿ØÖÆÄ£Ê½  1Byte
-    RIS_Comd_t comd;    // µç»úÆÚÍûÊı¾İ 12Byte
-    uint16_t   CRC16;   // CRC          2Byte
+    uint8_t head[2]; // åŒ…å¤´         2Byte
+    RIS_Mode_t mode; // ç”µæœºæ§åˆ¶æ¨¡å¼  1Byte
+    RIS_Comd_t comd; // ç”µæœºæœŸæœ›æ•°æ® 12Byte
+    uint16_t CRC16;  // CRC          2Byte
 
-} ControlData_t;    // Ö÷»ú¿ØÖÆÃüÁî     17Byte
+} ControlData_t; // ä¸»æœºæ§åˆ¶å‘½ä»¤     17Byte
 
+typedef struct
+{
+    unsigned short id;   // ç”µæœºIDï¼Œ0xBBä»£è¡¨å…¨éƒ¨ç”µæœº
+    unsigned short mode; // 0:ç©ºé—², 5:å¼€ç¯è½¬åŠ¨, 10:é—­ç¯FOCæ§åˆ¶
+    uint16_t correct;    // æ¥æ”¶æ•°æ®æ˜¯å¦å®Œæ•´ ï¼ˆ1 å®Œæ•´ï¼Œ0ä¸å®Œæ•´ï¼‰
+    int MError;          // é”™è¯¯ç  0.æ­£å¸¸ 1.è¿‡çƒ­ 2.è¿‡æµ 3.è¿‡å‹ 4.ç¼–ç å™¨æ•…éšœ
+    int Temp;            // æ¸©åº¦
+    float tar_pos;       // target position
+    float tar_w;         // target speed
+    float T;             // å½“å‰å®é™…ç”µæœºè¾“å‡ºåŠ›çŸ©
+    float W;             // å½“å‰å®é™…ç”µæœºé€Ÿåº¦ï¼ˆé«˜é€Ÿï¼‰
+    float Pos;           // å½“å‰ç”µæœºä½ç½®
+                         // float angle;                    //ç”µæœºå®é™…éœ€è¦è§’åº¦
+    int footForce;       // They dont even know what 7 is this so we dont update this
+    uint8_t buffer[17];
+    uint8_t Rec_buffer[16];
+    ControlData_t motor_send_data;
+} GO_Motorfield;
 
+typedef struct
+{
+    int id;
+    float T;
+    float Pos;
+    float W;
+    float K_P;
+    float K_W;
+} M8010_SendData;
 
-
-typedef struct {              
-        unsigned short id;              // µç»úID£¬0xBB´ú±íÈ«²¿µç»ú
-        unsigned short mode;            // 0:¿ÕÏĞ, 5:¿ª»·×ª¶¯, 10:±Õ»·FOC¿ØÖÆ
-        uint16_t correct;               // ½ÓÊÕÊı¾İÊÇ·ñÍêÕû £¨1 ÍêÕû£¬0²»ÍêÕû£©
-        int MError;                     // ´íÎóÂë 0.Õı³£ 1.¹ıÈÈ 2.¹ıÁ÷ 3.¹ıÑ¹ 4.±àÂëÆ÷¹ÊÕÏ
-        int Temp;                       // ÎÂ¶È
-        float tar_pos;                  // target position 
-        float tar_w;                    // target speed
-        float T;                        // µ±Ç°Êµ¼Êµç»úÊä³öÁ¦¾Ø
-        float W;                        // µ±Ç°Êµ¼Êµç»úËÙ¶È£¨¸ßËÙ£©
-        float Pos;                      // µ±Ç°µç»úÎ»ÖÃ
-	      //float angle;                    //µç»úÊµ¼ÊĞèÒª½Ç¶È
-        int footForce;                  // They dont even know what 7 is this so we dont update this
-        uint8_t buffer[17];
-        uint8_t Rec_buffer[16];
-        ControlData_t  motor_send_data;  
-}GO_Motorfield;
-
-//motor init function 
-void GO_M8010_init(GO_Motorfield *GO_motor_info,uint8_t id);
+// motor init function
+void GO_M8010_init(GO_Motorfield *GO_motor_info, uint8_t id);
 
 // send motor control message
-void GO_M8010_send_data(int id,float T,float W,float Pos,float K_P,float K_W);
+void GO_M8010_send_data(int id, float T, float W, float Pos, float K_P, float K_W);
 
 //  transmittion interrupt callback
-//void uartTxCB(UART_HandleTypeDef *huart);
+// void uartTxCB(UART_HandleTypeDef *huart);
 
 // data recv to the target motor
-void GO_M8010_recv_data(uint8_t* Temp_buffer, GO_Motorfield* motor);
+void GO_M8010_recv_data(uint8_t *Temp_buffer, GO_Motorfield *motor);
 
-// testing force position mix fucntion 
-
-
+// testing force position mix fucntion
 
 void go8010_init(void);
 
 // motor array
 extern GO_Motorfield GO_motor_info[4];
+extern M8010_SendData m8010_senddata[2];//8010å‘é€ç»“æ„ä½“åˆå§‹åŒ–
 void go8010_receive(void);
 
-
 #endif /*__GO_M8010_6_H */
-
